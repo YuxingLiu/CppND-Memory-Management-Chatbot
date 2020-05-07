@@ -52,8 +52,7 @@ ChatBot::ChatBot(const ChatBot &source)
     _rootNode = source._rootNode;
 
     // copy image into heap memory
-    _image = new wxBitmap();
-    *_image = *source._image;
+    _image = new wxBitmap(*source._image);
 }
 
 // copy assignment operator
@@ -69,8 +68,7 @@ ChatBot& ChatBot::operator=(const ChatBot &source)
 
     // copy image into heap memory
     delete _image;
-    _image = new wxBitmap();
-    *_image = *source._image;
+    _image = new wxBitmap(*source._image);
 
     return *this;
 }
@@ -85,10 +83,13 @@ ChatBot::ChatBot(ChatBot &&source)
     _rootNode = source._rootNode;
     _image = source._image;
 
+    // move GUI to new instance
+    _chatLogic->SetChatbotHandle(this);
+
     // invalidate source data handles
     source._chatLogic = nullptr;
     source._rootNode = nullptr;
-    source._image = nullptr;
+    source._image = NULL;
 }
 
 // move assignment operator
@@ -105,10 +106,13 @@ ChatBot& ChatBot::operator=(ChatBot &&source)
     _rootNode = source._rootNode;
     _image = source._image;
 
+    // move GUI to new instance
+    _chatLogic->SetChatbotHandle(this);
+
     // invalidate source data handles
     source._chatLogic = nullptr;
     source._rootNode = nullptr;
-    source._image = nullptr;
+    source._image = NULL;
 
     return *this;
 }
